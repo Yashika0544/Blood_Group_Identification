@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Home Page</title>
+    <style>
+        body {
+            font-family: Arial;
+        }
+        .navbar {
+            background-color: #6770c2;
+            overflow: hidden;
+        }
+        .navbar a {
+            float: left;
+            display: block;
+            color: black;
+            text-align: center;
+            padding: 20px 20px;
+            text-decoration: none;
+        }
+        .navbar a:hover {
+            background-color: white;
+            /* color: black; */
+        }
+        .navbar-right {
+            float: right;
+        }   
+    </style>
+</head>
+<body>
+    <h1>Blood Group Identification Page!</h1>
+    <div class="navbar">
+        <div class="navbar-right">
+            <a href="{% url 'login' %}">Login</a>
+            <a href="{% url 'signup' %}">Sign Up</a>
+        </div>
+    </div>
+    <p>Django Lorem, ipsum dolor sit amet consectetur adipisicing elit. 
+        Tempore vitae repellendus quidem maiores error quisquam eaque, 
+        ducimus dolorum totam, labore quo nulla possimus officia incidunt 
+        impedit sapiente voluptate corrupti nobis.</p>
+</body>
+</html>
