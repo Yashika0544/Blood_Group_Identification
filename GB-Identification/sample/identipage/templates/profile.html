@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Profile Page</title>
+    <style>
+        body {
+            font-family: Arial;
+
+            height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            background-image: url('https://images.pexels.com/photos/954584/pexels-photo-954584.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2');
+            background-size: cover; 
+            background-position: center;
+        }
+        .navbar {
+            background-color: rgba(194, 103, 103, 0.8);
+            overflow: hidden;
+            position: fixed;
+            top: 0;
+            width: 100%;
+            z-index: 1000;
+        }
+        .navbar a {
+            float: left;
+            font-weight: bold;
+            display: block;
+            color: black;
+            text-align: center;
+            padding: 20px 20px;
+            text-decoration: none;
+        }
+        .navbar a:hover {
+            background-color: white;
+        }
+        .container {
+            text-align: center;
+        }
+        form {
+            background-color: white;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            width: 300px;
+            text-align: center;
+            margin: 30px;
+        }
+        label {
+            display: block;
+            text-align: left;
+        }
+        input[type="file"]{
+            width: 100%;
+        }
+        button[type="submit"] {
+            background-color: rgb(255, 94, 94);
+            color: black;
+            padding: 10px 20px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            width: 100%;
+        }
+    </style>
+</head>
+<body>
+    <div class="navbar">
+        <a href="{% url 'home' %}">Home</a>
+    </div>
+    <div class="container">
+    <form method="POST" enctype="multipart/form-data">
+        <h3>Blood Group Identification</h3>
+        <label for="abo-image">ABO Blood Cell Image:</label><br>
+        <input type="file" id="abo-image" name="abo_image" accept="image/*"><br><br>  
+        <label for="rh-image">RH Blood Cell Image:</label><br>
+        <input type="file" id="rh-image" name="rh_image" accept="image/*"><br><br>    
+        <button type="submit">Check your blood type</button>
+    </form>
+    </div>  
+</body>
+</html>
