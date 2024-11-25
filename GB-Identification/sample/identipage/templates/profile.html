@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Profile Page</title>
+    <style>
+        body {
+            font-family: Arial;
+
+            height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            background-image: url('https://images.pexels.com/photos/954584/pexels-photo-954584.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2');
+            background-size: cover; 
+            background-position: center;
+        }
+        .navbar {
+            background-color: rgba(194, 103, 103, 0.8);
+            overflow: hidden;
+            position: fixed;
+            top: 0;
+            width: 100%;
+            z-index: 1000;
+        }
+        .navbar a {
+            float: left;
+            font-weight: bold;
+            display: block;
+            color: black;
+            text-align: center;
+            padding: 20px 20px;
+            text-decoration: none;
+        }
+        .navbar a:hover {
+            background-color: white;
+        }
+        .container {
+            text-align: center;
+        }
+        form {
+            background-color: white;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            width: 300px;
+            text-align: center;
+            margin: 30px;
+        }
+        label {
+            display: block;
+            text-align: left;
+        }
+        input[type="file"]{
+            width: 100%;
+        }
+        button[type="submit"] {
+            background-color: rgb(255, 94, 94);
+            color: black;
+            padding: 10px 20px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            width: 100%;
+        }
+        .content {
+            max-width: 100%;
+            background-color: rgba(255, 252, 252, 0.6);
+            padding: 20px;
+            margin-top: 100px;
+            border-radius: 10px;
+            display: flex;
+            flex-direction: row;
+        }
+        .row {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-top: 20px;
+        }
+        .col {
+            flex: 1;
+            padding: 10px;
+            text-align: center;
+        }
+    </style>
+</head>
+<body>
+    <div class="navbar">
+        <a href="{% url 'home' %}">Home</a>
+    </div>
+    <div class="content">
+    <div class="container">
+    <form method="POST" enctype="multipart/form-data">
+        {% csrf_token %}
+        <h3>Blood Group Identification</h3>
+        <label for="abd-image">ABD Blood Cell Image:</label><br>
+        <input type="file" id="abd-image" name="abd_image" accept="image/*"><br><br>   
+        <button type="submit">Check Blood Type</button>
+    </form>
+    {% if blood_type %}
+            <h3>Predicted Blood Type:</h3>
+            <p style="font-size: 18px; font-weight: bold;">{{ blood_type }}</p>
+    {% endif %}
+    </div>
+    <div class="row">
+        {% if abd_image_url and morphologic_image_url %}
+            <div class="col">
+                <h3>ABD Blood Cell Image:</h3>
+                <img src="{{ abd_image_url }}" alt="Original ABD Blood Cell Image">
+            </div>
+            <div class="col">
+                <h3>Processed Image:</h3>
+                <img src="{{ morphologic_image_url }}" alt="Processed Image">
+            </div>
+        {% endif %}
+    </div>
+    {% if error_message %}
+        <p style="color: rgb(255, 0, 0); margin-top: 120px;">{{ error_message }}</p>
+    {% endif %}
+    </div>
+</body>
+</html>
