@@ -2,8 +2,6 @@ from django.shortcuts import render, redirect
 from django.contrib.auth import authenticate
 from django.contrib.auth.forms import AuthenticationForm, UserCreationForm
 from django.shortcuts import HttpResponseRedirect
-# from django.core.files.storage import default_storage
-# from django.core.files.base import ContentFile
 import base64
 from django.core.files.uploadedfile import InMemoryUploadedFile
 import cv2
@@ -59,14 +57,6 @@ def profile(request):
         abd_image= request.FILES.get('abd_image')
         if abd_image:
 
-            # media file storgage method --> it store the output each and every time which take a alloate of memory space.
-            # abo_image_name = default_storage.save('blood_cell.jpg', ContentFile(abo_image.read()))
-            # abo_image_url = default_storage.url(abo_image_name)
-            # return render(request, "profile.html", {
-            #     'abo_image_url': abo_image_url
-            # })
-
-        
             image_data = abd_image.read()
             img_array = np.frombuffer(image_data, np.uint8)
             img = cv2.imdecode(img_array, cv2.IMREAD_COLOR)
@@ -123,28 +113,33 @@ def profile(request):
             num_region_A = cal_agg(region_A)
             num_region_B = cal_agg(region_B)
             num_region_D = cal_agg(region_D)
+            
+            agglutination_threshold = 3
+        
+            # Determine positive reactions
+            a_positive = num_region_A >= agglutination_threshold 
+            b_positive = num_region_B >= agglutination_threshold 
+            rh_positive = num_region_D >= agglutination_threshold 
 
             # Determine the blood type based on agglutination
-            if num_region_A > 0 and num_region_B == 0 and num_region_D > 0:
-                blood_type = "A+"
-            elif num_region_A == 0 and num_region_B > 0 and num_region_D > 0:
-                blood_type = "B+"
-            elif num_region_A > 0 and num_region_B > 0 and num_region_D > 0:
+            if a_positive and b_positive:
                 blood_type = "AB+"
-            elif num_region_A == 0 and num_region_B == 0 and num_region_D > 0:
+            elif a_positive:
+                blood_type = "A+"
+            elif b_positive:
+                blood_type = "B+"
+            elif not a_positive and not b_positive and rh_positive:
                 blood_type = "O+"
-            elif num_region_A > 0 and num_region_B == 0 and num_region_D <= 0:
+            elif a_positive and not b_positive and not rh_positive:
                 blood_type = "A-"
-            elif num_region_A == 0 and num_region_B > 0 and num_region_D <= 0:
+            elif not a_positive and b_positive and not rh_positive:
                 blood_type = "B-"
-            elif num_region_A > 0 and num_region_B > 0 and num_region_D <= 0:
+            elif a_positive and b_positive and not rh_positive:
                 blood_type = "AB-"
-            elif num_region_A == 0 and num_region_B == 0 and num_region_D <= 0:
+            elif not a_positive and not b_positive and not rh_positive:
                 blood_type = "O-"
             else:
                 blood_type = "Unknown"
-            
-
         else:
             return render(request, "profile.html", {
                 'error_message': "Please upload ABD blood cell images."
